@@ -25,13 +25,25 @@ namespace RunAsService.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("./runasservice.log")]
-        public string logFile {
+        [global::System.Configuration.DefaultSettingValueAttribute("TestApplication.exe")]
+        public string ServiceExecutable {
             get {
-                return ((string)(this["logFile"]));
+                return ((string)(this["ServiceExecutable"]));
             }
             set {
-                this["logFile"] = value;
+                this["ServiceExecutable"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("--test=42")]
+        public string ServiceArguments {
+            get {
+                return ((string)(this["ServiceArguments"]));
+            }
+            set {
+                this["ServiceArguments"] = value;
             }
         }
     }

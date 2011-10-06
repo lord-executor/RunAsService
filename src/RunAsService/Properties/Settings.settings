@@ -2,8 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RunAsService.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="logFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">./runasservice.log</Value>
+    <Setting Name="ServiceExecutable" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TestApplication.exe</Value>
+    </Setting>
+    <Setting Name="ServiceArguments" Type="System.String" Scope="User">
+      <Value Profile="(Default)">--test=42</Value>
     </Setting>
   </Settings>
 </SettingsFile>

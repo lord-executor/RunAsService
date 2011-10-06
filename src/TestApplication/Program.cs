@@ -10,7 +10,6 @@ namespace TestApplication
         {
             Console.WriteLine("Starting application");
 
-            Console.TreatControlCAsInput = false;
             Process.GetCurrentProcess().Exited += ProgramExited;
 
             int i = 0;
