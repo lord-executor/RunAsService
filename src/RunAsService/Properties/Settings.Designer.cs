@@ -25,18 +25,6 @@ namespace RunAsService.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("TestApplication.exe")]
-        public string ServiceExecutable {
-            get {
-                return ((string)(this["ServiceExecutable"]));
-            }
-            set {
-                this["ServiceExecutable"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("--test=42")]
         public string ServiceArguments {
             get {
@@ -44,6 +32,18 @@ namespace RunAsService.Properties {
             }
             set {
                 this["ServiceArguments"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\..\\TestApplication\\bin\\Debug\\TestApplication.exe")]
+        public string ServiceExecutable {
+            get {
+                return ((string)(this["ServiceExecutable"]));
+            }
+            set {
+                this["ServiceExecutable"] = value;
             }
         }
     }
