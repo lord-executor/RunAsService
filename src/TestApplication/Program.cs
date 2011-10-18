@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using UnitTests.Application.Strings;
+using System.Reflection;
 
 namespace TestApplication
 {
@@ -8,25 +10,46 @@ namespace TestApplication
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Starting application");
+            Console.WriteLine(Common.StartUp);
 
             Process.GetCurrentProcess().Exited += ProgramExited;
 
-            int i = 0;
-            while (true)
+            if (args.Length == 1)
             {
-                Console.WriteLine("Doing service-y stuff...");
-                if (i % 13 == 0)
-                    Console.Error.WriteLine("There might be the occasional error");
-
-                Thread.Sleep(5000);
-                i++;
+                var methodName = args[0];
+                var method = typeof (Program).GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
+                method.Invoke(null, null);
             }
+            else
+            {
+                Console.WriteLine("No method name specified");
+            }
+
+            Console.WriteLine(Common.ShutDown);
         }
 
         static void ProgramExited(object sender, EventArgs e)
         {
-            Console.WriteLine("Stopping application");
+            Console.WriteLine(Common.Exiting);
+        }
+
+        static void TestTerminatingNormally()
+        {
+            Console.WriteLine(TerminatingNormally.ServiceMessage);
+        }
+
+        static void TestNeverTerminating()
+        {
+            int i = 0;
+            while (true)
+            {
+                Console.WriteLine(NeverTerminating.ServiceMessage);
+                if (i % 13 == 0)
+                    Console.Error.WriteLine(NeverTerminating.ErrorMessage);
+
+                Thread.Sleep(5000);
+                i++;
+            }
         }
     }
 }
