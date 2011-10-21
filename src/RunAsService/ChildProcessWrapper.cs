@@ -85,6 +85,11 @@ namespace RunAsService
             return true;
         }
 
+        public bool WaitForExit(int milliseconds)
+        {
+            return _childProcess.WaitForExit(milliseconds);
+        }
+
         public void Terminate()
         {
             if (_childProcess != null && !_childProcess.HasExited)
@@ -120,12 +125,14 @@ namespace RunAsService
 
         private void ChildProcessOutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            _childLog.Info(e.Data);
+            if (!String.IsNullOrEmpty(e.Data))
+                _childLog.Info(e.Data);
         }
 
         private void ChildProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            _childLog.Warn(e.Data);
+            if (!String.IsNullOrEmpty(e.Data))
+                _childLog.Warn(e.Data);
         }
 
         #endregion

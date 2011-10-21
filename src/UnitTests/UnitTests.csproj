@@ -57,12 +57,20 @@
     <Compile Include="Application\Strings\TerminatingNormally.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GlobalTests.cs" />
+    <Compile Include="ChildProcessWrapperTests.cs" />
     <Compile Include="Utilities\ListAppender.cs" />
+    <Compile Include="Utilities\LoggerUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TestFiles\log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RunAsService\RunAsService.csproj">
+      <Project>{8CE65B33-BD9A-4147-B937-5AA97F905737}</Project>
+      <Name>RunAsService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

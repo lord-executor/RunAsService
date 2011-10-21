@@ -2,6 +2,7 @@
 <TestSettings name="Local" id="d33a940f-b44f-494b-a96a-c4fead585b09" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
+    <DeploymentItem filename="TestApplication\bin\Debug\TestApplication.exe" />
     <DeploymentItem filename="UnitTests\TestFiles\" />
   </Deployment>
   <Execution>
