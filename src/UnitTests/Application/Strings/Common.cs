@@ -10,5 +10,8 @@ namespace UnitTests.Application.Strings
         public const string StartUp = "Starting application";
         public const string ShutDown = "Stopping application";
         public const string Exiting = "Exiting application";
+        public const string WarningMessage = "There might be the occasional error";
+        public const string ExceptionMessage = "Fatal crash";
+        public const string ServiceMessage = "Doing service stuff";
     }
 }

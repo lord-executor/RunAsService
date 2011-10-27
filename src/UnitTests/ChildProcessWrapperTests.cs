@@ -25,13 +25,40 @@ namespace UnitTests
         [Test]
         public void TestTerminatingNormally()
         {
+            var events = RunTestApplication("TestTerminatingNormally");
+            var fullLog = BuildFullLog(events);
+
+            Assert.AreEqual(Common.ServiceMessage, events[2].RenderedMessage, fullLog);
+            Assert.AreEqual(Common.ShutDown, events[3].RenderedMessage, fullLog);
+            Assert.IsTrue(events[4].RenderedMessage.Contains("exited with exit code"), fullLog);
+
+            Assert.AreEqual(5, events.Count, "Expected 5 log messages: {0}", fullLog);
+        }
+
+        [Test]
+        public void TestExceptionTerminating()
+        {
+            var events = RunTestApplication("TestExceptionTerminating");
+            var fullLog = BuildFullLog(events);
+
+            Assert.AreEqual(Common.ServiceMessage, events[2].RenderedMessage, fullLog);
+            Assert.AreEqual(Common.ExceptionMessage, events[3].RenderedMessage, fullLog);
+        }
+
+        private string BuildFullLog(IList<LoggingEvent> events)
+        {
+            return String.Concat(Environment.NewLine, String.Join(Environment.NewLine, events.Select(e => e.RenderedMessage)));
+        }
+
+        private IList<LoggingEvent> RunTestApplication(string testMethod)
+        {
             var log = LogManager.GetLogger("ChildProcess");
             var settings = new ChildProcessSettings
-                               {
-                                   FileName = @"TestFiles\TestApplication.exe",
-                                   WorkingDirectory = @".\",
-                                   Arguments = "TestTerminatingNormally",
-                               };
+            {
+                FileName = @"TestFiles\TestApplication.exe",
+                WorkingDirectory = @".\",
+                Arguments = testMethod,
+            };
             var wrapper = new ChildProcessWrapper(log, settings);
 
             Assert.IsTrue(wrapper.Start(), "Unable to start TestApplication.exe");
@@ -41,18 +68,7 @@ namespace UnitTests
             var events = LoggerUtil.GetEvents();
             CheckApplicationStart(events);
 
-            var fullLog = BuildFullLog(events);
-
-            Assert.AreEqual(TerminatingNormally.ServiceMessage, events[2].RenderedMessage, fullLog);
-            Assert.AreEqual(Common.ShutDown, events[3].RenderedMessage, fullLog);
-            Assert.IsTrue(events[4].RenderedMessage.Contains("exited with exit code"), fullLog);
-
-            Assert.AreEqual(5, events.Count, "Expected 5 log messages: {0}", fullLog);
-        }
-
-        private string BuildFullLog(IList<LoggingEvent> events)
-        {
-            return String.Concat(Environment.NewLine, String.Join(Environment.NewLine, events.Select(e => e.RenderedMessage)));
+            return events;
         }
 
         private void CheckApplicationStart(IList<LoggingEvent> events)
