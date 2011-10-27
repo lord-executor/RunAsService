@@ -2,34 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RunAsService;
 using UnitTests.Utilities;
 using log4net;
 using System.Threading;
 using log4net.Core;
 using UnitTests.Application.Strings;
+using NUnit.Framework;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class ChildProcessWrapperTests
     {
         public TestContext TestContext { get; set; }
-        [TestInitialize]
+        [Test]
         public void TestInitialize()
         {
             LoggerUtil.ClearEvents();
         }
 
-        [TestMethod]
+        [Test]
         public void TestTerminatingNormally()
         {
             var log = LogManager.GetLogger("ChildProcess");
             var settings = new ChildProcessSettings
                                {
-                                   FileName = @"TestApplication.exe",
-                                   WorkingDirectory = ".\\",
+                                   FileName = @"TestFiles\TestApplication.exe",
+                                   WorkingDirectory = @".\",
                                    Arguments = "TestTerminatingNormally",
                                };
             var wrapper = new ChildProcessWrapper(log, settings);

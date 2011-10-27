@@ -1,12 +1,12 @@
 ﻿using System.IO;
 using log4net;
 using log4net.Core;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UnitTests.Utilities;
+using NUnit.Framework;
 
 namespace UnitTests
 {
-    [TestClass]
+    [TestFixture]
     public class GlobalTests
     {
         private const string TestMessage1 = "TestMessage1";
@@ -14,19 +14,13 @@ namespace UnitTests
 
         public TestContext TestContext { get; set; }
 
-        [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext context)
-        {
-            LoggerUtil.InitializeLog4Net();
-        }
-
-        [TestInitialize]
+        [Test]
         public void TestInitialize()
         {
             LoggerUtil.ClearEvents();
         }
 
-        [TestMethod]
+        [Test]
         public void TestLogging()
         {
             var log = LogManager.GetLogger("SomeLogger");
