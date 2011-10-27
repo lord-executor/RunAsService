@@ -28,6 +28,11 @@ namespace RunAsService
         /// Child process handle
         /// </summary>
         private Process _childProcess;
+        /// <summary>
+        /// Error mode context used to prevent the child process from popping
+        /// up with the JIT debugging dialog
+        /// </summary>
+        private ErrorModeContext _errorModeContext;
 
         #endregion
 
@@ -62,6 +67,11 @@ namespace RunAsService
 
         public bool Start()
         {
+            _errorModeContext = new ErrorModeContext(
+                ErrorModeContext.ErrorModes.FailCriticalErrors |
+                ErrorModeContext.ErrorModes.NoGpFaultErrorBox |
+                ErrorModeContext.ErrorModes.NoOpenFileErrorBox);
+
             try
             {
                 _childProcess = Process.Start(_startInfo);
@@ -110,6 +120,7 @@ namespace RunAsService
                 _childProcess.Close();
             }
 
+            _errorModeContext.Dispose();
             _childProcess = null;
         }
 
@@ -121,6 +132,7 @@ namespace RunAsService
         private void ChildProcessExited(object sender, EventArgs e)
         {
             _childLog.InfoFormat("Child process exited with exit code {0} ({0:x8})", _childProcess.ExitCode);
+            _errorModeContext.Dispose();
         }
 
         private void ChildProcessOutputDataReceived(object sender, DataReceivedEventArgs e)

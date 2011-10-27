@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="ChildProcessSettings.cs" />
     <Compile Include="ChildProcessWrapper.cs" />
+    <Compile Include="ErrorModeContext.cs" />
     <Compile Include="RunAsService.cs">
       <SubType>Component</SubType>
     </Compile>
