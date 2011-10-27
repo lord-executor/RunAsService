@@ -16,7 +16,7 @@ namespace UnitTests
     public class ChildProcessWrapperTests
     {
         public TestContext TestContext { get; set; }
-        [Test]
+        [SetUp]
         public void TestInitialize()
         {
             LoggerUtil.ClearEvents();
@@ -36,13 +36,26 @@ namespace UnitTests
         }
 
         [Test]
+        public void TestExceptionTerminatingGlobalHandler()
+        {
+            var events = RunTestApplication("TestExceptionTerminating", true);
+            var fullLog = BuildFullLog(events);
+
+            Assert.AreEqual(Common.ServiceMessage, events[2].RenderedMessage, fullLog);
+            Assert.AreEqual(Common.ExceptionMessage, events[3].RenderedMessage, fullLog);
+            Assert.True(events[4].RenderedMessage.Contains("process exited with exit code -1"), fullLog);
+        }
+
+        [Test]
         public void TestExceptionTerminating()
         {
             var events = RunTestApplication("TestExceptionTerminating");
             var fullLog = BuildFullLog(events);
 
             Assert.AreEqual(Common.ServiceMessage, events[2].RenderedMessage, fullLog);
-            Assert.AreEqual(Common.ExceptionMessage, events[3].RenderedMessage, fullLog);
+            Assert.True(events[3].RenderedMessage.Contains(Common.ExceptionMessage), fullLog);
+            Assert.True(events[3].RenderedMessage.Contains("Unhandled Exception"), fullLog);
+            Assert.True(events.Last().RenderedMessage.Contains("process exited with exit code "), fullLog);
         }
 
         private string BuildFullLog(IList<LoggingEvent> events)
@@ -50,14 +63,14 @@ namespace UnitTests
             return String.Concat(Environment.NewLine, String.Join(Environment.NewLine, events.Select(e => e.RenderedMessage)));
         }
 
-        private IList<LoggingEvent> RunTestApplication(string testMethod)
+        private IList<LoggingEvent> RunTestApplication(string testMethod, bool globalExceptionHandler = false)
         {
             var log = LogManager.GetLogger("ChildProcess");
             var settings = new ChildProcessSettings
             {
                 FileName = @"TestFiles\TestApplication.exe",
                 WorkingDirectory = @".\",
-                Arguments = testMethod,
+                Arguments = String.Format("{0}{1}", testMethod, globalExceptionHandler ? " --globalhandler" : String.Empty),
             };
             var wrapper = new ChildProcessWrapper(log, settings);
 

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using UnitTests.Application.Strings;
 using System.Reflection;
+using System.Linq;
 
 namespace TestApplication
 {
@@ -12,10 +13,12 @@ namespace TestApplication
         {
             Console.WriteLine(Common.StartUp);
 
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            if (args.Contains("--globalhandler"))
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Process.GetCurrentProcess().Exited += ProgramExited;
 
-            if (args.Length == 1)
+            if (args.Length >= 1)
             {
                 var methodName = args[0];
                 var method = typeof(Program).GetMethod(methodName, BindingFlags.Static | BindingFlags.NonPublic);
@@ -80,6 +83,15 @@ namespace TestApplication
                 Console.WriteLine(Common.ServiceMessage);
                 Thread.Sleep(250);
                 throw new Exception(Common.ExceptionMessage);
+            }
+        }
+
+        static void TestExitTerminating()
+        {
+            while (true)
+            {
+                Console.WriteLine(Common.ServiceMessage);
+                Environment.Exit(42);
             }
         }
     }
